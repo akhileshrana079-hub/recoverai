@@ -16,6 +16,7 @@ RecoverAI helps businesses reduce revenue leakage caused by failed payments by:
 
 ## 🚀 Live Demo
 
+
 ### RecoverAI Dashboard
 
 https://recoverai-dashboard-6wts.onrender.com
@@ -29,6 +30,13 @@ https://recoverai-nc4d.onrender.com
 https://recoverai-nc4d.onrender.com/api/health
 
 ---
+
+## 🏗️ Architecture
+
+![RecoverAI System Architecture](docs/recoverai-architecture.png)
+
+RecoverAI connects Razorpay payment events with an AI recovery decision engine, a deterministic policy layer, controlled recovery actions, MongoDB persistence, and a React dashboard for measurable revenue recovery.
+
 
 ## 🎯 Problem
 
