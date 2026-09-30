@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>RecoverAI - Razorpay Test</title>
+
+  <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      max-width: 600px;
+      margin: 80px auto;
+      padding: 20px;
+    }
+
+    button {
+      padding: 14px 24px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    #status {
+      margin-top: 20px;
+    }
+  </style>
+</head>
+
+<body>
+
+  <h1>RecoverAI Payment Test</h1>
+
+  <p>
+    Transaction: <strong>TXN2001</strong>
+  </p>
+
+  <p>
+    Amount: <strong>₹799</strong>
+  </p>
+
+  <button id="payButton">
+    Pay ₹799
+  </button>
+
+  <div id="status"></div>
+
+  <script>
+    const payButton =
+      document.getElementById("payButton");
+
+    const status =
+      document.getElementById("status");
+
+    payButton.addEventListener(
+      "click",
+      async () => {
+        try {
+          status.textContent =
+            "Creating Razorpay order...";
+
+          const response = await fetch(
+            "http://localhost:5001/api/razorpay/orders",
+            {
+              method: "POST",
+
+              headers: {
+                "Content-Type":
+                  "application/json"
+              },
+
+              body: JSON.stringify({
+                transactionId: "TXN2001",
+                amount: 799,
+                currency: "INR"
+              })
+            }
+          );
+
+          const result =
+            await response.json();
+
+          if (!result.success) {
+            throw new Error(
+              result.message
+            );
+          }
+
+          const order = result.data;
+
+          status.textContent =
+            "Opening Razorpay Checkout...";
+
+          const options = {
+            key: "rzp_test_ThrqtNDfAbjKvG",
+
+            amount: order.amount,
+
+            currency: order.currency,
+
+            name: "RecoverAI",
+
+            description:
+              "RecoverAI Payment Recovery Test",
+
+            order_id:
+              order.orderId,
+
+            // Explicitly enable payment methods
+            method: {
+              upi: true,
+              card: true,
+              netbanking: true,
+              wallet: true
+            },
+
+            handler: function (
+              response
+            ) {
+              console.log(
+                "Payment completed:",
+                response
+              );
+
+              status.innerHTML = `
+                <strong>Payment completed.</strong><br>
+                Payment ID:
+                ${response.razorpay_payment_id}
+                <br>
+                Waiting for Razorpay webhook...
+              `;
+            },
+
+            modal: {
+              ondismiss:
+                function () {
+                  status.textContent =
+                    "Razorpay Checkout closed.";
+                }
+            },
+
+            theme: {
+              color: "#3399cc"
+            }
+          };
+
+          const razorpay =
+            new Razorpay(options);
+
+          razorpay.on(
+            "payment.failed",
+            function (response) {
+              console.log(
+                "Payment failed:",
+                response
+              );
+
+              status.innerHTML = `
+                <strong>Payment failed.</strong><br>
+                Error:
+                ${response.error.description}
+              `;
+            }
+          );
+
+          razorpay.open();
+
+        } catch (error) {
+          console.error(error);
+
+          status.textContent =
+            "Error: " +
+            error.message;
+        }
+      }
+    );
+  </script>
+
+</body>
+</html>

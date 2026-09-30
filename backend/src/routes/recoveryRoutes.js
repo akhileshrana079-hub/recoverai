@@ -3,23 +3,23 @@ const express = require("express");
 const router = express.Router();
 
 const {
-  getRecoveryDecision,
-} = require("../controllers/recoveryDecisionController");
+  getRecoveryEvaluation,
+} = require("../controllers/recoveryEvaluationController");
 
 const {
-  executeAction,
-} = require("../controllers/recoveryActionController");
+  getRecoveryLogs,
+} = require("../controllers/recoveryLogController");
 
-// AI recovery decision
-router.post(
-  "/decision/:transactionId",
-  getRecoveryDecision
+// Recovery evaluation
+router.get(
+  "/evaluation",
+  getRecoveryEvaluation
 );
 
-// Execute recovery action
-router.post(
-  "/execute/:transactionId",
-  executeAction
+// Recovery audit logs
+router.get(
+  "/audit-logs",
+  getRecoveryLogs
 );
 
 module.exports = router;

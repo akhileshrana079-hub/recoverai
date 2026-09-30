@@ -20,7 +20,8 @@
     "helmet": "^8.3.0",
     "mongoose": "^9.10.2",
     "morgan": "^1.12.1",
-    "multer": "^2.4.0"
+    "multer": "^2.4.0",
+    "razorpay": "^2.9.8"
   },
   "devDependencies": {
     "nodemon": "^3.1.14"

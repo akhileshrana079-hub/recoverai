@@ -9,6 +9,33 @@ const transactionSchema = new mongoose.Schema(
       trim: true,
     },
 
+    razorpayOrderId: {
+      type: String,
+      default: null,
+      index: true,
+    },
+
+    lastRazorpayPaymentId: {
+      type: String,
+      default: null,
+    },
+
+    lastPaymentErrorCode: {
+      type: String,
+      default: null,
+    },
+
+    lastPaymentErrorDescription: {
+      type: String,
+      default: null,
+    },
+
+    // Razorpay webhook IDs already processed
+    processedWebhookIds: {
+      type: [String],
+      default: [],
+    },
+
     customerId: {
       type: String,
       required: true,
@@ -28,13 +55,23 @@ const transactionSchema = new mongoose.Schema(
 
     paymentMethod: {
       type: String,
-      enum: ["UPI", "CARD", "NETBANKING", "WALLET"],
+      enum: [
+        "UPI",
+        "CARD",
+        "NETBANKING",
+        "WALLET",
+      ],
       required: true,
     },
 
     status: {
       type: String,
-      enum: ["captured", "failed", "refunded", "pending"],
+      enum: [
+        "captured",
+        "failed",
+        "refunded",
+        "pending",
+      ],
       required: true,
     },
 
@@ -89,4 +126,8 @@ const transactionSchema = new mongoose.Schema(
   }
 );
 
-module.exports = mongoose.model("Transaction", transactionSchema);
+module.exports =
+  mongoose.model(
+    "Transaction",
+    transactionSchema
+  );

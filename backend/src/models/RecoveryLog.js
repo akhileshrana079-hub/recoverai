@@ -18,6 +18,7 @@ const recoveryLogSchema = new mongoose.Schema(
         "ESCALATE",
         "STOP",
         "RECOVERED",
+        "PAYMENT_CAPTURED"
       ],
     },
 
