@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 
 const API_URL = "https://recoverai-nc4d.onrender.com";
 
