@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 
-const API_URL = "http://localhost:5001";
+const API_URL = "https://recoverai-nc4d.onrender.com";
 
 function App() {
   const [evaluation, setEvaluation] = useState(null);
